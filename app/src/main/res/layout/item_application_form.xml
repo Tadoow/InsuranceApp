@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/text_application_form_hint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:hint="Мощность автомобиля"
+    android:textColorHint="@color/main_60"
+    app:hintTextAppearance="@style/TextSecondary"
+    app:placeholderTextAppearance="@style/TextPrimary">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/text_application_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/items_form_background"
+        android:textAppearance="@style/TextPrimary"
+        android:textColor="@color/main_100" />
+
+</com.google.android.material.textfield.TextInputLayout>

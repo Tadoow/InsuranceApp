@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">"Калькулятор ОСАГО"</string>
+    <string name="calculate_insurance">Рассчитать ОСАГО</string>
+</resources>
