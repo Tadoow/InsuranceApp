@@ -1,6 +1,7 @@
 package com.example.osagocalculation.presentation.form
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,6 @@ class FormFragment : Fragment(R.layout.fragment_application_form), OnItemClickLi
 
     private lateinit var binding: FragmentApplicationFormBinding
 
-    private val dialogFormFragment: DialogFormFragment = DialogFormFragment.newInstance()
     private val adapter = FormAdapter(this)
     private val repository = RepositoryImpl()
 
@@ -30,7 +30,9 @@ class FormFragment : Fragment(R.layout.fragment_application_form), OnItemClickLi
         adapter.setData(repository.getFormData())
     }
 
-    override fun formClicked() {
+    override fun onFormClicked(formItem: String) {
+        val dialogFormFragment = DialogFormFragment.newInstance(formItem)
+        Log.d(TAG, "formClicked: $formItem")
         dialogFormFragment.show(parentFragmentManager, DialogFormFragment.TAG)
     }
 

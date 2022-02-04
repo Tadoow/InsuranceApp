@@ -12,4 +12,8 @@ class FormViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.textApplicationFormHint.hint = hint
     }
 
+    fun setClickListener(listener: View.OnClickListener) {
+        binding.textApplicationForm.setOnClickListener(listener)
+    }
+
 }

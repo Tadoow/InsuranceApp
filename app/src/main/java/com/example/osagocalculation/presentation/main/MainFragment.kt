@@ -44,7 +44,7 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
         adapter.setData(repository.getData())
     }
 
-    override fun headerClicked() {
+    override fun onHeaderClicked() {
         adapter.toggleSection()
     }
 
