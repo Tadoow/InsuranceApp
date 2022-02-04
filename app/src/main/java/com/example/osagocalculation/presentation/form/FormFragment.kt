@@ -1,7 +1,6 @@
 package com.example.osagocalculation.presentation.form
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +14,12 @@ import com.example.osagocalculation.presentation.form.listener.OnItemClickListen
 
 class FormFragment : Fragment(R.layout.fragment_application_form), OnItemClickListener {
 
-    private lateinit var binding: FragmentApplicationFormBinding
-
     private val adapter = FormAdapter(this)
     private val repository = RepositoryImpl()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentApplicationFormBinding.bind(view)
+        val binding = FragmentApplicationFormBinding.bind(view)
 
         binding.recyclerApplicationForm.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -32,7 +29,6 @@ class FormFragment : Fragment(R.layout.fragment_application_form), OnItemClickLi
 
     override fun onFormClicked(formItem: String) {
         val dialogFormFragment = DialogFormFragment.newInstance(formItem)
-        Log.d(TAG, "formClicked: $formItem")
         dialogFormFragment.show(parentFragmentManager, DialogFormFragment.TAG)
     }
 

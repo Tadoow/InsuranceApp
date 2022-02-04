@@ -40,8 +40,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linear_layout_dialog_next"
         android:layout_width="match_parent"
+        android:layout_marginTop="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="308dp"
         android:orientation="horizontal">
 
         <TextView

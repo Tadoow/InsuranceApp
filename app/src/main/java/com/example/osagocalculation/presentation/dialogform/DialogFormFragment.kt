@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.osagocalculation.R
 import com.example.osagocalculation.databinding.FragmentBottomSheetBinding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DialogFormFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentBottomSheetBinding
-    private lateinit var dialogTitle: String
+    private val dialogTitle by lazy { requireArguments().getString(TITLE_KEY)!! }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dialogTitle = requireArguments().getString(TITLE_KEY)!!
         return inflater.inflate(R.layout.fragment_bottom_sheet, container, false)
     }
 
@@ -27,14 +27,13 @@ class DialogFormFragment : BottomSheetDialogFragment() {
         val binding = FragmentBottomSheetBinding.bind(view)
 
         binding.textBottomTitle.text = dialogTitle
+        binding.editTextBottomForm.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                val behavior = (dialog as BottomSheetDialog).behavior
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        val behavior = (dialog as BottomSheetDialog).behavior
-//        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//        behavior.peekHeight = 200
-//    }
 
     companion object {
 

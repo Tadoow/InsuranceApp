@@ -1,6 +1,5 @@
 package com.example.osagocalculation.presentation.main.adapter
 
-import android.util.Log
 import com.example.osagocalculation.domain.entities.Coefficients
 import com.example.osagocalculation.presentation.main.adapter.viewholder.CoefficientHeaderViewHolder
 import com.example.osagocalculation.presentation.main.listener.OnItemClickListener
@@ -14,7 +13,6 @@ object CoefficientHeaderBinder {
     ) {
         holder.setCoefficientsNames(buildCoefficientsNames(item))
         holder.itemView.setOnClickListener {
-            Log.d("TAG", "onBind: coeff")
             listener.onHeaderClicked()
             holder.toggleHeaderState()
         }

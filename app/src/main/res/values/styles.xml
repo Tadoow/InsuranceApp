@@ -53,6 +53,7 @@
     </style>
 
     <style name="ThemeOverlay.MyBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 
