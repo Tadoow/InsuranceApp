@@ -7,8 +7,8 @@ object FormItemBinder {
 
     fun onBind(holder: FormViewHolder, item: String, listener: OnItemClickListener) {
         holder.setHint(item)
-        holder.itemView.setOnClickListener {
-            listener.formClicked()
+        holder.setClickListener {
+            listener.onFormClicked(item)
         }
     }
 
