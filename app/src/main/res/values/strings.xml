@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">"Калькулятор ОСАГО"</string>
     <string name="calculate_insurance">Рассчитать ОСАГО</string>
+    <string name="factor_title">БТ</string>
+    <string name="factor_name">(базоый тариф)</string>
+    <string name="factor_detail_text">Устанавливает страховая компания</string>
+    <string name="factor_value">2 754 – 4 432 Р</string>
+    <string name="factors_header">Ваши коэффициенты</string>
+    <string name="form_hint">Город регистрации собственника</string>
+    <string name="next">Далее</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

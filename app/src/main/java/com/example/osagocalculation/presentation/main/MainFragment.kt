@@ -2,26 +2,48 @@ package com.example.osagocalculation.presentation.main
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.osagocalculation.App
 import com.example.osagocalculation.R
 import com.example.osagocalculation.data.RepositoryImpl
+import com.example.osagocalculation.data.store.FactorsStore
 import com.example.osagocalculation.databinding.FragmentMainBinding
-import com.example.osagocalculation.domain.Repository
+import com.example.osagocalculation.domain.Interactor
 import com.example.osagocalculation.presentation.form.FormFragment
 import com.example.osagocalculation.presentation.main.adapter.MainAdapter
 import com.example.osagocalculation.presentation.main.listener.OnItemClickListener
 
 class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
 
+    private lateinit var binding: FragmentMainBinding
+
+    // TODO: прикрутить к проекту даггер
+    private val viewModel: SharedViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                val factorsApi = (activity?.application as App).factorsApi
+                val factorsStore = FactorsStore((activity?.application as App).sharedPreferences)
+                val repository = RepositoryImpl(factorsApi, factorsStore)
+                val interactor = Interactor(repository)
+                return SharedViewModel(interactor) as T
+            }
+        }
+    }
+
     private val adapter = MainAdapter(this)
-    private val repository: Repository = RepositoryImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
+            viewModel.getInitialFactors()
+
             childFragmentManager.beginTransaction()
                 .add(R.id.fragment_container_inner, FormFragment.newInstance())
                 .commit()
@@ -30,20 +52,33 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentMainBinding.bind(view)
+        binding = FragmentMainBinding.bind(view)
+
+        observeLiveData()
 
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         val actionBar = (activity as MainActivity).supportActionBar
         actionBar?.title = getString(R.string.app_name)
 
-        binding.recyclerCoefficients.layoutManager =
+        binding.recyclerFactors.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.recyclerCoefficients.adapter = adapter
-        adapter.setData(repository.getData())
+        binding.recyclerFactors.adapter = adapter
     }
 
     override fun onHeaderClicked() {
         adapter.toggleSection()
+    }
+
+    private fun observeLiveData() {
+        viewModel.factorsLiveData.observe(this) {
+            adapter.setData(it)
+        }
+        viewModel.progressLiveData.observe(this) {
+            binding.buttonCalculate.isEnabled = it
+        }
+        viewModel.errorLiveData.observe(this) {
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+        }
     }
 
     companion object {
