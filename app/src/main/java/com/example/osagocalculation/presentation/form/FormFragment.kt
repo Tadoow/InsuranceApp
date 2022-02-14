@@ -8,22 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.R
 import com.example.osagocalculation.data.RepositoryImpl
 import com.example.osagocalculation.databinding.FragmentApplicationFormBinding
+import com.example.osagocalculation.presentation.dialogform.DialogFormFragment
 import com.example.osagocalculation.presentation.form.adapter.FormAdapter
+import com.example.osagocalculation.presentation.form.listener.OnItemClickListener
 
-class FormFragment : Fragment(R.layout.fragment_application_form) {
+class FormFragment : Fragment(R.layout.fragment_application_form), OnItemClickListener {
 
-    private lateinit var binding: FragmentApplicationFormBinding
-    private val adapter = FormAdapter()
+    private val adapter = FormAdapter(this)
     private val repository = RepositoryImpl()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentApplicationFormBinding.bind(view)
+        val binding = FragmentApplicationFormBinding.bind(view)
 
         binding.recyclerApplicationForm.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerApplicationForm.adapter = adapter
         adapter.setData(repository.getFormData())
+    }
+
+    override fun onFormClicked(formItem: String) {
+        val dialogFormFragment = DialogFormFragment.newInstance(formItem)
+        dialogFormFragment.show(parentFragmentManager, DialogFormFragment.TAG)
     }
 
     companion object {

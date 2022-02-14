@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.R
 import com.example.osagocalculation.presentation.form.adapter.viewholder.FormViewHolder
+import com.example.osagocalculation.presentation.form.listener.OnItemClickListener
 
-class FormAdapter : RecyclerView.Adapter<FormViewHolder>() {
+class FormAdapter(private val listener: OnItemClickListener) :
+    RecyclerView.Adapter<FormViewHolder>() {
 
     private val items = arrayListOf<String>()
 
@@ -17,7 +19,8 @@ class FormAdapter : RecyclerView.Adapter<FormViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FormViewHolder, position: Int) {
-        holder.setHint(items[position])
+        val item = items[position]
+        FormItemBinder.onBind(holder, item, listener)
     }
 
     override fun getItemCount(): Int = items.count()

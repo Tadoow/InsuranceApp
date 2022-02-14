@@ -13,7 +13,7 @@ object CoefficientHeaderBinder {
     ) {
         holder.setCoefficientsNames(buildCoefficientsNames(item))
         holder.itemView.setOnClickListener {
-            listener.headerClicked()
+            listener.onHeaderClicked()
             holder.toggleHeaderState()
         }
     }

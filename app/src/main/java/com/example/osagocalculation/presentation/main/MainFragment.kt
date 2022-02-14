@@ -15,9 +15,7 @@ import com.example.osagocalculation.presentation.main.listener.OnItemClickListen
 
 class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
 
-    private lateinit var binding: FragmentMainBinding
     private val adapter = MainAdapter(this)
-
     private val repository: Repository = RepositoryImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +30,7 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentMainBinding.bind(view)
+        val binding = FragmentMainBinding.bind(view)
 
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         val actionBar = (activity as MainActivity).supportActionBar
@@ -44,7 +42,7 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
         adapter.setData(repository.getData())
     }
 
-    override fun headerClicked() {
+    override fun onHeaderClicked() {
         adapter.toggleSection()
     }
 
