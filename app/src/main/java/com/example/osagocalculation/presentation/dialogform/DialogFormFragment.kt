@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.osagocalculation.R
 import com.example.osagocalculation.data.dto.FormData
@@ -19,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DialogFormFragment : BottomSheetDialogFragment() {
 
+    private val viewModel: DialogViewModel by viewModels()
     private val clickedItemPosition by lazy { requireArguments().getInt(POSITION_KEY) }
     private lateinit var formItemsList: List<FormData>
 
@@ -68,9 +70,11 @@ class DialogFormFragment : BottomSheetDialogFragment() {
         }
 
         binding.buttonDialogNext.setOnClickListener {
-            val currentFragment =
-                childFragmentManager.fragments[binding.viewPagerBottomSheet.currentItem] as OnClickButtonListener
-            currentFragment.onNextButtonClicked()
+//            val currentFragment =
+//                childFragmentManager.fragments[binding.viewPagerBottomSheet.currentItem] as OnClickButtonListener
+//            currentFragment.onNextButtonClicked()
+            // TODO: подумать еще как можно, сообщать дочернему фрагменту, что в родительском произошло событие
+            viewModel.setFragmentListener(true)
             when (binding.viewPagerBottomSheet.currentItem) {
                 formItemsList.lastIndex -> {
                     dismiss()

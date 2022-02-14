@@ -11,6 +11,7 @@ object FormItemBinder {
         holder.setValue(item.value)
 
         if (item.value.isEmpty()) {
+            holder.setInitialPaddings()
             holder.setTextVisibility(false)
         } else {
             holder.setTextVisibility(true)

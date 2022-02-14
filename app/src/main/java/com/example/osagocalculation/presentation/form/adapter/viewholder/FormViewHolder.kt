@@ -26,4 +26,8 @@ class FormViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         binding.textApplicationFormHint.setPadding(0)
     }
 
+    fun setInitialPaddings() {
+        binding.textApplicationFormHint.setPadding(0, 18, 0, 18)
+    }
+
 }

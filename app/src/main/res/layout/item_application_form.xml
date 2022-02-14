@@ -14,8 +14,6 @@
         android:id="@+id/text_application_form_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="9dp"
-        android:paddingBottom="9dp"
         android:text="@string/form_hint"
         android:textAppearance="@style/TextPrimary" />
 
