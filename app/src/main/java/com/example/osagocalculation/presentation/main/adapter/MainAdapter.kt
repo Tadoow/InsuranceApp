@@ -4,34 +4,34 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.R
-import com.example.osagocalculation.domain.entities.Coefficients
-import com.example.osagocalculation.presentation.main.adapter.viewholder.CoefficientHeaderViewHolder
-import com.example.osagocalculation.presentation.main.adapter.viewholder.CoefficientViewHolder
+import com.example.osagocalculation.domain.entities.Factors
+import com.example.osagocalculation.presentation.main.adapter.viewholder.FactorViewHolder
+import com.example.osagocalculation.presentation.main.adapter.viewholder.FactorsHeaderViewHolder
 import com.example.osagocalculation.presentation.main.listener.OnItemClickListener
 
 class MainAdapter(private val listener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val items = arrayListOf<Coefficients>()
-    private val itemsToToggle = arrayListOf<Coefficients>()
+    private val items = arrayListOf<Factors>()
+    private val itemsToToggle = arrayListOf<Factors>()
 
     override fun getItemViewType(position: Int): Int =
         when (items[position]) {
-            is Coefficients.Header -> R.layout.item_coefficients_header
-            is Coefficients.Coefficient -> R.layout.item_coefficient
+            is Factors.Header -> R.layout.item_factors_header
+            is Factors.FactorDomain -> R.layout.item_factor
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
-            R.layout.item_coefficients_header -> {
+            R.layout.item_factors_header -> {
                 val itemView = LayoutInflater.from(parent.context)
                     .inflate(viewType, parent, false)
-                CoefficientHeaderViewHolder(itemView)
+                FactorsHeaderViewHolder(itemView)
             }
-            R.layout.item_coefficient -> {
+            R.layout.item_factor -> {
                 val itemView = LayoutInflater.from(parent.context)
                     .inflate(viewType, parent, false)
-                CoefficientViewHolder(itemView)
+                FactorViewHolder(itemView)
             }
             else -> throw IllegalArgumentException("Such viewType not found: $viewType")
         }
@@ -39,15 +39,17 @@ class MainAdapter(private val listener: OnItemClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
-            is CoefficientHeaderViewHolder -> CoefficientHeaderBinder.onBind(holder, item, listener)
-            is CoefficientViewHolder -> CoefficientBinder.onBind(holder, item)
+            is FactorsHeaderViewHolder -> FactorsHeaderBinder.onBind(holder, item, listener)
+            is FactorViewHolder -> FactorBinder.onBind(holder, item)
             else -> throw IllegalArgumentException("Such holder not found $holder")
         }
     }
 
     override fun getItemCount(): Int = items.count()
 
-    fun setData(newData: List<Coefficients>) {
+    fun setData(newData: List<Factors>) {
+        items.clear()
+        itemsToToggle.clear()
         items.add(newData.first())
         itemsToToggle.addAll(newData)
         itemsToToggle.removeFirst()
@@ -55,7 +57,7 @@ class MainAdapter(private val listener: OnItemClickListener) :
     }
 
     fun toggleSection() {
-        val header = items.first() as Coefficients.Header
+        val header = items.first() as Factors.Header
         if (header.expanded) {
             items.removeAll(itemsToToggle)
             notifyItemRangeRemoved(1, itemsToToggle.count())

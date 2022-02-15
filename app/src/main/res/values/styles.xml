@@ -14,7 +14,7 @@
         <item name="android:textColor">@color/main_30</item>
     </style>
 
-    <style name="TextCoefficient" parent="TextAppearance.MaterialComponents.Subtitle2">
+    <style name="TextFactor" parent="TextAppearance.MaterialComponents.Subtitle2">
         <item name="android:textStyle">normal</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">16sp</item>
@@ -47,14 +47,32 @@
         <item name="cornerSize">12dp</item>
     </style>
 
+    <style name="TextInputShape" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
     <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearance">@style/BottomSheetShape</item>
-        <item name="backgroundTint">@color/light_100</item>
     </style>
 
     <style name="ThemeOverlay.MyBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/TextInputShape</item>
+        <item name="endIconDrawable">@drawable/ic_x</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="boxStrokeColor">@color/blue_100</item>
+    </style>
+
+    <style name="TextInputStyleFilled" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="shapeAppearanceOverlay">@style/TextInputShape</item>
+        <item name="boxBackgroundColor">@color/main_06</item>
+        <item name="boxStrokeWidth">0dp</item>
     </style>
 
 </resources>
