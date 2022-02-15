@@ -23,11 +23,24 @@ class FormViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun adjustPaddings() {
-        binding.textApplicationFormHint.setPadding(0)
+        binding.textApplicationFormHint.setPadding(PADDING)
     }
 
     fun setInitialPaddings() {
-        binding.textApplicationFormHint.setPadding(0, 18, 0, 18)
+        binding.textApplicationFormHint.setPadding(
+            PADDING_LEFT,
+            PADDING_TOP,
+            PADDING_RIGHT,
+            PADDING_BOTTOM
+        )
+    }
+
+    companion object {
+        private const val PADDING = 0
+        private const val PADDING_LEFT = 0
+        private const val PADDING_RIGHT = 0
+        private const val PADDING_TOP = 18
+        private const val PADDING_BOTTOM = 18
     }
 
 }

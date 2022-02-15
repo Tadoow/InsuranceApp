@@ -31,10 +31,10 @@ class App : Application() {
             .addInterceptor(logging)
             .build()
 
-        val contentType = "application/json".toMediaType()
+        val contentType = CONTENT_TYPE.toMediaType()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://mock.sravni-team.ru/")
+            .baseUrl(URL)
             .client(client)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -44,7 +44,9 @@ class App : Application() {
     }
 
     companion object {
-        const val PREFS = "APP_DATA"
+        private const val PREFS = "APP_DATA"
+        private const val URL = "http://mock.sravni-team.ru/"
+        private const val CONTENT_TYPE = "application/json"
     }
 
 }

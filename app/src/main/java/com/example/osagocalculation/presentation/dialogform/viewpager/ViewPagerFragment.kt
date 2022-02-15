@@ -2,7 +2,6 @@ package com.example.osagocalculation.presentation.dialogform.viewpager
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,13 +23,11 @@ class ViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         item = requireArguments().getParcelable(ITEM_KEY)!!
-        Log.d(TAG, "onCreateView: ${item.name}")
         return inflater.inflate(R.layout.fragment_bottom_sheet_content, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: ${item.name}")
         binding = FragmentBottomSheetContentBinding.bind(view)
 
         binding.textDialogTitle.text = item.name
@@ -40,14 +37,12 @@ class ViewPagerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, "onResume: ${item.name}")
         binding.editTextDialogForm.requestFocus()
         showKeyboard()
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d(TAG, "onPause: ${item.name}")
         item.value = binding.editTextDialogForm.text.toString()
         requireActivity().supportFragmentManager.setFragmentResult(
             REQUEST_KEY,

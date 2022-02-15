@@ -20,6 +20,7 @@ class DialogFormFragment : BottomSheetDialogFragment() {
 
     private val clickedItemPosition by lazy { requireArguments().getInt(POSITION_KEY) }
     private lateinit var formItemsList: List<FormData>
+    private val firstIndex = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +49,7 @@ class DialogFormFragment : BottomSheetDialogFragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 when (position) {
-                    0 -> binding.buttonDialogBack.isVisible = false
+                    firstIndex -> binding.buttonDialogBack.isVisible = false
                     formItemsList.lastIndex -> {
                         binding.textDialogNext.text = getString(R.string.confirm)
                         binding.imageDialogNext.isVisible = false

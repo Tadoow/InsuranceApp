@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.App
 import com.example.osagocalculation.R
 import com.example.osagocalculation.data.RepositoryImpl
-import com.example.osagocalculation.data.store.FactorsStore
+import com.example.osagocalculation.data.store.FactorsStoreImpl
 import com.example.osagocalculation.databinding.FragmentMainBinding
 import com.example.osagocalculation.domain.Interactor
 import com.example.osagocalculation.presentation.form.FormFragment
@@ -28,7 +28,8 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 val factorsApi = (activity?.application as App).factorsApi
-                val factorsStore = FactorsStore((activity?.application as App).sharedPreferences)
+                val factorsStore =
+                    FactorsStoreImpl((activity?.application as App).sharedPreferences)
                 val repository = RepositoryImpl(factorsApi, factorsStore)
                 val interactor = Interactor(repository)
                 return SharedViewModel(interactor) as T
@@ -58,7 +59,7 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
 
         (activity as MainActivity).setSupportActionBar(binding.toolbar)
         val actionBar = (activity as MainActivity).supportActionBar
-        actionBar?.title = getString(R.string.app_name)
+        actionBar?.title = getString(R.string.toolbar_main)
 
         binding.recyclerFactors.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -70,13 +71,13 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener {
     }
 
     private fun observeLiveData() {
-        viewModel.factorsLiveData.observe(this) {
+        viewModel.factorsLiveData.observe(viewLifecycleOwner) {
             adapter.setData(it)
         }
-        viewModel.progressLiveData.observe(this) {
+        viewModel.progressLiveData.observe(viewLifecycleOwner) {
             binding.buttonCalculate.isEnabled = it
         }
-        viewModel.errorLiveData.observe(this) {
+        viewModel.errorLiveData.observe(viewLifecycleOwner) {
             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
         }
     }
