@@ -26,6 +26,7 @@ class FormAdapter(private val listener: OnClickItemListener) :
     override fun getItemCount(): Int = items.count()
 
     fun setData(newData: List<FormData>) {
+        items.clear()
         items.addAll(newData)
         notifyDataSetChanged()
     }

@@ -1,11 +1,11 @@
-package com.example.osagocalculation.presentation.main
+package com.example.osagocalculation.presentation.insurances
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.osagocalculation.data.dto.FormData
 import com.example.osagocalculation.domain.Interactor
 import com.example.osagocalculation.domain.entities.Factors
+import com.example.osagocalculation.domain.entities.InsuranceDomain
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -13,15 +13,11 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class SharedViewModel(private val interactor: Interactor) : ViewModel() {
+class InsurancesViewModel(private val interactor: Interactor) : ViewModel() {
 
-    private val _factorsLiveData: MutableLiveData<List<Factors>> = MutableLiveData()
-    val factorsLiveData: LiveData<List<Factors>>
-        get() = _factorsLiveData
-
-    private val _formItemsLiveData: MutableLiveData<List<FormData>> = MutableLiveData()
-    val formItemsLivaData: LiveData<List<FormData>>
-        get() = _formItemsLiveData
+    private val _insurancesLiveData: MutableLiveData<List<InsuranceDomain>> = MutableLiveData()
+    val insuranceLiveData: LiveData<List<InsuranceDomain>>
+        get() = _insurancesLiveData
 
     private val _errorLiveData: MutableLiveData<Throwable> = MutableLiveData()
     val errorLiveData: LiveData<Throwable>
@@ -33,33 +29,18 @@ class SharedViewModel(private val interactor: Interactor) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    fun getInitialFactors() {
-        interactor.getInitialFactors()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = { _factorsLiveData.value = it },
-                onError = { _errorLiveData.value = it }
-            )
-            .addTo(compositeDisposable)
-    }
-
-    fun getCalculatedFactors(formValues: List<FormData>) {
-        interactor.getCalculatedFactors(formValues)
-            .doOnSubscribe { _progressLiveData.postValue(false) }
+    fun loadInsurances(factors: List<Factors>) {
+        interactor.getInsurances(factors)
+            .doOnSubscribe { _progressLiveData.postValue(true) }
             .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .doAfterTerminate { _progressLiveData.postValue(true) }
+            .doAfterTerminate { _progressLiveData.postValue(false) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
-                onSuccess = { _factorsLiveData.value = it },
+                onSuccess = { _insurancesLiveData.value = it },
                 onError = { _errorLiveData.value = it }
             )
             .addTo(compositeDisposable)
-    }
-
-    fun getFormItems() {
-        _formItemsLiveData.value = interactor.getFormItems()
     }
 
     override fun onCleared() {

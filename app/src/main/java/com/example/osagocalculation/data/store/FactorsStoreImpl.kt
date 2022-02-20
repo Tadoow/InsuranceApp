@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 class FactorsStoreImpl(private val sharedPreferences: SharedPreferences) : FactorsStore {
 
     private val initialFactorValues = listOf(
-        "2 754 - 4 432 Р",
+        "2 754 - 4 432 ₽",
         "0,6 - 1,6",
         "0,64 - 1,99",
         "0,5 - 2,45",

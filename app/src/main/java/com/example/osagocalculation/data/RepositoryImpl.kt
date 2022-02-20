@@ -1,9 +1,7 @@
 package com.example.osagocalculation.data
 
 import com.example.osagocalculation.data.api.FactorsApi
-import com.example.osagocalculation.data.dto.FactorData
-import com.example.osagocalculation.data.dto.FormData
-import com.example.osagocalculation.data.dto.FormRequest
+import com.example.osagocalculation.data.dto.*
 import com.example.osagocalculation.data.store.FactorsStore
 import com.example.osagocalculation.domain.Repository
 import io.reactivex.rxjava3.core.Single
@@ -29,6 +27,11 @@ class RepositoryImpl(
 
     override fun getFormItems(): List<FormData> {
         return factorsStore.getFormItems()
+    }
+
+    override fun getInsurances(factors: List<FactorData>): Single<List<InsuranceData>> {
+        return factorsApi.sendFactors(FactorsRequest(factors))
+            .map { it.offers }
     }
 
 }

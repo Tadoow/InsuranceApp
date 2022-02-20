@@ -1,11 +1,16 @@
 package com.example.osagocalculation.domain.entities
 
-sealed class Factors {
-    class Header(
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+sealed class Factors : Parcelable {
+    @Parcelize
+    data class Header(
         val headerValues: List<String>,
         var expanded: Boolean = false
     ) : Factors()
 
+    @Parcelize
     data class FactorDomain(
         val title: String,
         val headerValue: String,

@@ -31,8 +31,9 @@ class ViewPagerFragment : Fragment() {
         binding = FragmentBottomSheetContentBinding.bind(view)
 
         binding.textDialogTitle.text = item.name
-        binding.editTextDialogForm.inputType = item.inputType
         binding.editTextDialogForm.hint = item.hint
+        binding.editTextDialogForm.inputType = item.inputType
+        binding.editTextDialogForm.setText(item.value)
     }
 
     override fun onResume() {
