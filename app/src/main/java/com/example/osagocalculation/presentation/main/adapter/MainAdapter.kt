@@ -50,7 +50,12 @@ class MainAdapter(private val listener: OnItemClickListener) :
     fun setData(newData: List<Factors>) {
         items.clear()
         itemsToToggle.clear()
-        items.add(newData.first())
+        val header = newData.first() as Factors.Header
+        if (header.expanded) {
+            items.addAll(newData)
+        } else {
+            items.add(newData.first())
+        }
         itemsToToggle.addAll(newData)
         itemsToToggle.removeFirst()
         notifyDataSetChanged()

@@ -11,11 +11,13 @@ object FormItemBinder {
         holder.setValue(item.value)
 
         if (item.value.isEmpty()) {
-            holder.setInitialPaddings()
             holder.setTextVisibility(false)
+            holder.setInitialPaddings()
+            holder.setInitialFontSize()
         } else {
             holder.setTextVisibility(true)
             holder.adjustPaddings()
+            holder.adjustFontSize()
         }
 
         holder.itemView.setOnClickListener {

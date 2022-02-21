@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class SharedViewModel(private val interactor: Interactor) : ViewModel() {
 
@@ -46,6 +47,7 @@ class SharedViewModel(private val interactor: Interactor) : ViewModel() {
     fun getCalculatedFactors(formValues: List<FormData>) {
         interactor.getCalculatedFactors(formValues)
             .doOnSubscribe { _progressLiveData.postValue(false) }
+            .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .doAfterTerminate { _progressLiveData.postValue(true) }
             .observeOn(AndroidSchedulers.mainThread())
@@ -57,7 +59,14 @@ class SharedViewModel(private val interactor: Interactor) : ViewModel() {
     }
 
     fun getFormItems() {
-        _formItemsLiveData.value = interactor.getFormItems()
+        interactor.getFormItems()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { _formItemsLiveData.value = it },
+                onError = { _errorLiveData.value = it }
+            )
+            .addTo(compositeDisposable)
     }
 
     override fun onCleared() {

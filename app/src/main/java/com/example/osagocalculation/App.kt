@@ -1,7 +1,9 @@
 package com.example.osagocalculation
 
 import android.app.Application
-import android.content.SharedPreferences
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.util.CoilUtils
 import com.example.osagocalculation.data.api.FactorsApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -13,30 +15,38 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 
 class App : Application() {
 
+    private lateinit var okHttpClient: OkHttpClient
     lateinit var factorsApi: FactorsApi
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var imageLoader: ImageLoader
 
     override fun onCreate() {
         super.onCreate()
 
-        factorsApi = initRetrofit()
-        sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE)
+        okHttpClient = createOkhttpClient()
+        factorsApi = initRetrofit(okHttpClient)
+        imageLoader = ImageLoader.Builder(applicationContext)
+            .okHttpClient(okHttpClient)
+            .componentRegistry { add(SvgDecoder(applicationContext)) }
+            .build()
     }
 
-    private fun initRetrofit(): FactorsApi {
+    private fun createOkhttpClient(): OkHttpClient {
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
 
-        val client = OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(logging)
+            .cache(CoilUtils.createDefaultCache(applicationContext))
             .build()
+    }
 
+    private fun initRetrofit(client: OkHttpClient): FactorsApi {
         val contentType = CONTENT_TYPE.toMediaType()
 
         val retrofit = Retrofit.Builder()
             .baseUrl(URL)
             .client(client)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
 
@@ -44,7 +54,6 @@ class App : Application() {
     }
 
     companion object {
-        private const val PREFS = "APP_DATA"
         private const val URL = "http://mock.sravni-team.ru/"
         private const val CONTENT_TYPE = "application/json"
     }

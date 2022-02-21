@@ -39,7 +39,7 @@ class DialogFormFragment : BottomSheetDialogFragment() {
         binding.viewPagerBottomSheet.adapter = adapter
         adapter.setItems(formItemsList)
 
-        binding.viewPagerBottomSheet.currentItem = clickedItemPosition
+        binding.viewPagerBottomSheet.setCurrentItem(clickedItemPosition, false)
         if (clickedItemPosition == formItemsList.lastIndex) {
             binding.textDialogNext.text = getString(R.string.confirm)
             binding.imageDialogNext.isVisible = false
