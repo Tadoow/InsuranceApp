@@ -1,7 +1,6 @@
 package com.example.osagocalculation.presentation.insurances
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -35,7 +34,7 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 val factorsApi = (activity?.application as App).factorsApi
                 val factorsStore =
-                    FactorsStoreImpl((activity?.application as App).sharedPreferences)
+                    FactorsStoreImpl((activity?.application as App).applicationContext)
                 val repository = RepositoryImpl(factorsApi, factorsStore)
                 val interactor = Interactor(repository)
                 return InsurancesViewModel(interactor) as T
@@ -48,7 +47,6 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
 
         if (savedInstanceState == null) {
             viewModel.loadInsurances(factors)
@@ -57,7 +55,6 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: ")
         binding = FragmentInsurancesBinding.bind(view)
 
         binding.recyclerInsurances.layoutManager =
@@ -69,23 +66,7 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "onStart: ")
         (parentFragment as OnInsurancesFragmentListener).onFragmentStart()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: ")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause: ")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop: ")
     }
 
     private fun observeLiveData() {
@@ -93,6 +74,7 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
             adapter.setData(it)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
+            binding.shimmerInsurances.isVisible = true
             Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
         }
         viewModel.progressLiveData.observe(viewLifecycleOwner) {

@@ -12,21 +12,16 @@ class RepositoryImpl(
 ) : Repository {
 
     override fun getInitialFactors(): Single<List<FactorData>> {
-        return if (factorsStore.getFactorsInitialData().isNullOrEmpty()) {
-            factorsApi.getFactorsInitialData()
-                .map { factorsStore.saveFactorsInitialData(it.factors) }
-        } else {
-            Single.fromCallable { factorsStore.getFactorsInitialData() }
-        }
+        return Single.fromCallable { factorsStore.getFactorsInitialData() }
     }
 
     override fun getCalculatedFactors(formValues: List<FormData>): Single<List<FactorData>> {
-        return factorsApi.sendFormValues(FormRequest(formValues))
+        return factorsApi.sendForm(FormRequest(formValues))
             .map { it.factors }
     }
 
-    override fun getFormItems(): List<FormData> {
-        return factorsStore.getFormItems()
+    override fun getFormItems(): Single<List<FormData>> {
+        return Single.fromCallable { factorsStore.getFormData() }
     }
 
     override fun getInsurances(factors: List<FactorData>): Single<List<InsuranceData>> {

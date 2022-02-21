@@ -1,7 +1,7 @@
 package com.example.osagocalculation.presentation.main
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
@@ -32,13 +32,13 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener,
     private lateinit var binding: FragmentMainBinding
     private lateinit var factors: List<Factors>
 
-    // TODO: прикрутить к проекту даггер
+    // TODO: решил оставить даггер на финальную неделю
     private val viewModel: SharedViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 val factorsApi = (activity?.application as App).factorsApi
                 val factorsStore =
-                    FactorsStoreImpl((activity?.application as App).sharedPreferences)
+                    FactorsStoreImpl((activity?.application as App).applicationContext)
                 val repository = RepositoryImpl(factorsApi, factorsStore)
                 val interactor = Interactor(repository)
                 return SharedViewModel(interactor) as T
@@ -50,7 +50,6 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate: ")
         if (savedInstanceState == null) {
             viewModel.getInitialFactors()
 
@@ -62,7 +61,6 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(TAG, "onViewCreated: ")
         binding = FragmentMainBinding.bind(view)
 
         observeLiveData()
@@ -79,50 +77,45 @@ class MainFragment : Fragment(R.layout.fragment_main), OnItemClickListener,
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart: ")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume: ")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause: ")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop: ")
+    override fun onHeaderClicked() {
+        adapter.toggleSection()
     }
 
     override fun onFragmentStart() {
         binding.buttonCalculateInsurance.isVisible = false
         binding.buttonBuyInsurance.isVisible = true
-        binding.toolbar.title = getString(R.string.calculate_payment)
-        binding.toolbar.setTitleTextAppearance(context, R.style.ToolbarTitleSecondary)
-        binding.toolbar.navigationIcon =
-            ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_back, null)
-        (binding.toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags =
+
+        configureToolbar(
+            getString(R.string.calculate_payment),
+            R.style.ToolbarTitleSecondary,
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_back, null),
             AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
+        )
 
         binding.toolbar.setNavigationOnClickListener {
             childFragmentManager.popBackStack()
             binding.buttonCalculateInsurance.isVisible = true
             binding.buttonBuyInsurance.isVisible = false
-            binding.toolbar.title = getString(R.string.toolbar_main)
-            binding.toolbar.setTitleTextAppearance(context, R.style.ToolbarTitle)
-            binding.toolbar.navigationIcon = null
-            (binding.toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags =
+
+            configureToolbar(
+                getString(R.string.toolbar_main),
+                R.style.ToolbarTitle,
+                null,
                 AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+            )
         }
     }
 
-    override fun onHeaderClicked() {
-        adapter.toggleSection()
+    private fun configureToolbar(
+        title: String,
+        style: Int,
+        navigationIcon: Drawable?,
+        scrollFlags: Int
+    ) {
+        binding.toolbar.title = title
+        binding.toolbar.setTitleTextAppearance(context, style)
+        binding.toolbar.navigationIcon = navigationIcon
+        (binding.toolbar.layoutParams as AppBarLayout.LayoutParams).scrollFlags = scrollFlags
     }
 
     private fun observeLiveData() {

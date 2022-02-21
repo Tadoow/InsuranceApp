@@ -59,7 +59,14 @@ class SharedViewModel(private val interactor: Interactor) : ViewModel() {
     }
 
     fun getFormItems() {
-        _formItemsLiveData.value = interactor.getFormItems()
+        interactor.getFormItems()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onSuccess = { _formItemsLiveData.value = it },
+                onError = { _errorLiveData.value = it }
+            )
+            .addTo(compositeDisposable)
     }
 
     override fun onCleared() {

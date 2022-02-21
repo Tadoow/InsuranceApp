@@ -1,7 +1,6 @@
 package com.example.osagocalculation
 
 import android.app.Application
-import android.content.SharedPreferences
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.util.CoilUtils
@@ -18,7 +17,6 @@ class App : Application() {
 
     private lateinit var okHttpClient: OkHttpClient
     lateinit var factorsApi: FactorsApi
-    lateinit var sharedPreferences: SharedPreferences
     lateinit var imageLoader: ImageLoader
 
     override fun onCreate() {
@@ -26,7 +24,6 @@ class App : Application() {
 
         okHttpClient = createOkhttpClient()
         factorsApi = initRetrofit(okHttpClient)
-        sharedPreferences = getSharedPreferences(PREFS, MODE_PRIVATE)
         imageLoader = ImageLoader.Builder(applicationContext)
             .okHttpClient(okHttpClient)
             .componentRegistry { add(SvgDecoder(applicationContext)) }
@@ -57,7 +54,6 @@ class App : Application() {
     }
 
     companion object {
-        private const val PREFS = "APP_DATA"
         private const val URL = "http://mock.sravni-team.ru/"
         private const val CONTENT_TYPE = "application/json"
     }

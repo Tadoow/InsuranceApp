@@ -44,7 +44,7 @@ class Interactor(private val repository: Repository) {
             .map(insuranceDataToEntityMapper)
     }
 
-    fun getFormItems(): List<FormData> {
+    fun getFormItems(): Single<List<FormData>> {
         return repository.getFormItems()
     }
 
