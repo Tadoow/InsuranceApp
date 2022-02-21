@@ -13,6 +13,10 @@ class FactorsHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
         binding.textFactorsHeaderValue.text = Html.fromHtml(names)
     }
 
+    fun setHeaderState(expanded: Boolean) {
+        binding.imageArrow.isSelected = expanded
+    }
+
     fun toggleHeaderState() {
         binding.imageArrow.isSelected = !binding.imageArrow.isSelected
     }
