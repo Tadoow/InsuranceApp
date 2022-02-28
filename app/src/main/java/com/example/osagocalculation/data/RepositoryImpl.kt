@@ -5,8 +5,11 @@ import com.example.osagocalculation.data.dto.*
 import com.example.osagocalculation.data.store.FactorsStore
 import com.example.osagocalculation.domain.Repository
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RepositoryImpl(
+@Singleton
+class RepositoryImpl @Inject constructor(
     private val factorsApi: FactorsApi,
     private val factorsStore: FactorsStore
 ) : Repository {

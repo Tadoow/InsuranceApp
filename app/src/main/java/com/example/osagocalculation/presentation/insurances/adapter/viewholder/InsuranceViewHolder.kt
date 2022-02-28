@@ -1,6 +1,5 @@
 package com.example.osagocalculation.presentation.insurances.adapter.viewholder
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.core.view.isVisible
@@ -36,10 +35,10 @@ class InsuranceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         (itemView.context.applicationContext as App).imageLoader.enqueue(request)
     }
 
-    fun setInsuranceIconBackground(backgroundColor: String, title: String, fontColor: String) {
-        binding.imageInsurance.setImageDrawable(ColorDrawable(Color.parseColor("#$backgroundColor")))
+    fun setInsuranceIconBackground(backgroundColor: Int, title: String, fontColor: Int) {
+        binding.imageInsurance.setImageDrawable(ColorDrawable(backgroundColor))
         binding.textInsuranceIconTitle.isVisible = true
-        binding.textInsuranceIconTitle.setTextColor(Color.parseColor("#$fontColor"))
+        binding.textInsuranceIconTitle.setTextColor(fontColor)
         binding.textInsuranceIconTitle.text = title
     }
 

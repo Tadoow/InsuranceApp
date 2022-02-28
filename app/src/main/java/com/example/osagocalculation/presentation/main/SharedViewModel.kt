@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.osagocalculation.data.dto.FormData
+import com.example.osagocalculation.di.main.FragmentScope
 import com.example.osagocalculation.domain.Interactor
 import com.example.osagocalculation.domain.entities.Factors
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -12,8 +13,10 @@ import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class SharedViewModel(private val interactor: Interactor) : ViewModel() {
+@FragmentScope
+class SharedViewModel @Inject constructor(private val interactor: Interactor) : ViewModel() {
 
     private val _factorsLiveData: MutableLiveData<List<Factors>> = MutableLiveData()
     val factorsLiveData: LiveData<List<Factors>>
@@ -49,7 +52,7 @@ class SharedViewModel(private val interactor: Interactor) : ViewModel() {
             .doOnSubscribe { _progressLiveData.postValue(false) }
             .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
-            .doAfterTerminate { _progressLiveData.postValue(true) }
+            .doOnSuccess { _progressLiveData.postValue(true) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = { _factorsLiveData.value = it },

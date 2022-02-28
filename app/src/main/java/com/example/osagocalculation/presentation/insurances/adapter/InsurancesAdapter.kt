@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.R
 import com.example.osagocalculation.domain.entities.InsuranceDomain
 import com.example.osagocalculation.presentation.insurances.adapter.viewholder.InsuranceViewHolder
+import com.example.osagocalculation.presentation.insurances.listener.OnInsuranceClickListener
 
-class InsurancesAdapter : RecyclerView.Adapter<InsuranceViewHolder>() {
+class InsurancesAdapter(private val listener: OnInsuranceClickListener) :
+    RecyclerView.Adapter<InsuranceViewHolder>() {
 
     private val items = mutableListOf<InsuranceDomain>()
 
@@ -18,7 +20,7 @@ class InsurancesAdapter : RecyclerView.Adapter<InsuranceViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: InsuranceViewHolder, position: Int) {
-        InsuranceItemBinder.onBind(holder, items[position])
+        InsuranceItemBinder.onBind(holder, items[position], listener)
     }
 
     override fun getItemCount(): Int = items.count()

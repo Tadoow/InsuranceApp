@@ -12,7 +12,8 @@ import com.example.osagocalculation.R
 import com.example.osagocalculation.data.dto.FormData
 import com.example.osagocalculation.databinding.FragmentBottomSheetBinding
 import com.example.osagocalculation.presentation.dialogform.viewpager.ViewPagerAdapter
-import com.example.osagocalculation.presentation.form.listener.OnDismissDialogListener
+import com.example.osagocalculation.presentation.dialogform.viewpager.ZoomOutPageTransformer
+import com.example.osagocalculation.presentation.form.listener.OnDialogDismissListener
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -44,6 +45,8 @@ class DialogFormFragment : BottomSheetDialogFragment() {
             binding.textDialogNext.text = getString(R.string.confirm)
             binding.imageDialogNext.isVisible = false
         }
+
+        binding.viewPagerBottomSheet.setPageTransformer(ZoomOutPageTransformer())
 
         binding.viewPagerBottomSheet.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -79,7 +82,7 @@ class DialogFormFragment : BottomSheetDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        (parentFragment as OnDismissDialogListener).onDialogDismissed()
+        (parentFragment as OnDialogDismissListener).onDialogDismiss()
     }
 
     override fun onStart() {

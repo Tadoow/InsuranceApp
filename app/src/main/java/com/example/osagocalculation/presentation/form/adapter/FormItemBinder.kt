@@ -2,11 +2,11 @@ package com.example.osagocalculation.presentation.form.adapter
 
 import com.example.osagocalculation.data.dto.FormData
 import com.example.osagocalculation.presentation.form.adapter.viewholder.FormViewHolder
-import com.example.osagocalculation.presentation.form.listener.OnClickItemListener
+import com.example.osagocalculation.presentation.form.listener.OnFormClickListener
 
 object FormItemBinder {
 
-    fun onBind(holder: FormViewHolder, item: FormData, listener: OnClickItemListener) {
+    fun onBind(holder: FormViewHolder, item: FormData, listener: OnFormClickListener) {
         holder.setName(item.name)
         holder.setValue(item.value)
 
@@ -21,7 +21,8 @@ object FormItemBinder {
         }
 
         holder.itemView.setOnClickListener {
-            listener.onFormItemClicked(item)
+            holder.itemView.isClickable = false
+            listener.onFormClick(item)
         }
     }
 

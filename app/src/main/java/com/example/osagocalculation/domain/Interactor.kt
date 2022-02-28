@@ -7,8 +7,9 @@ import com.example.osagocalculation.domain.mapper.EntityToFactorDataMapper
 import com.example.osagocalculation.domain.mapper.FactorDataToEntityMapper
 import com.example.osagocalculation.domain.mapper.InsuranceDataToEntityMapper
 import io.reactivex.rxjava3.core.Single
+import javax.inject.Inject
 
-class Interactor(private val repository: Repository) {
+class Interactor @Inject constructor(private val repository: Repository) {
 
     private val factorDataToEntityMapper = FactorDataToEntityMapper()
     private val insuranceDataToEntityMapper = InsuranceDataToEntityMapper()

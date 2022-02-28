@@ -1,5 +1,6 @@
 package com.example.osagocalculation.domain.mapper
 
+import android.graphics.Color
 import com.example.osagocalculation.data.dto.InsuranceData
 import com.example.osagocalculation.domain.entities.InsuranceDomain
 
@@ -9,14 +10,26 @@ class InsuranceDataToEntityMapper : (List<InsuranceData>) -> List<InsuranceDomai
         return insurances.map {
             InsuranceDomain(
                 name = it.name,
-                rating = it.rating,
-                price = it.price,
+                rating = it.rating.toString(),
+                price = it.price.toString(),
                 iconUrl = it.branding.iconUrl,
                 iconTitle = it.branding.iconTitle,
-                fontColor = it.branding.fontColor,
-                iconBackground = it.branding.backgroundColor
+                fontColor = getColor(it.branding.fontColor),
+                iconBackground = getColor(it.branding.backgroundColor)
             )
         }
+    }
+
+    private fun getColor(code: String): Int {
+        return try {
+            Color.parseColor("#$code")
+        } catch (e: RuntimeException) {
+            DEFAULT_COLOR
+        }
+    }
+
+    companion object {
+        private const val DEFAULT_COLOR = 0
     }
 
 }

@@ -6,9 +6,11 @@ import com.example.osagocalculation.data.dto.FormData
 import com.example.osagocalculation.utils.AssetsHelper
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import javax.inject.Inject
+import javax.inject.Singleton
 
-//Отказался, в итоге, совсем от затеи с шаред префами, положил все в ассеты как и обсуждали на созвоне
-class FactorsStoreImpl(private val context: Context) : FactorsStore {
+@Singleton
+class FactorsStoreImpl @Inject constructor(private val context: Context) : FactorsStore {
 
     override fun getFormData(): List<FormData>? {
         return Json.decodeFromStream(AssetsHelper.readFile(context, FORM_DATA))

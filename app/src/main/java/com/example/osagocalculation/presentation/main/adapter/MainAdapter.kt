@@ -7,9 +7,9 @@ import com.example.osagocalculation.R
 import com.example.osagocalculation.domain.entities.Factors
 import com.example.osagocalculation.presentation.main.adapter.viewholder.FactorViewHolder
 import com.example.osagocalculation.presentation.main.adapter.viewholder.FactorsHeaderViewHolder
-import com.example.osagocalculation.presentation.main.listener.OnItemClickListener
+import com.example.osagocalculation.presentation.main.listener.OnFactorClickListener
 
-class MainAdapter(private val listener: OnItemClickListener) :
+class MainAdapter(private val listener: OnFactorClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val items = arrayListOf<Factors>()

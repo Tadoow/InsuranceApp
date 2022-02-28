@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.osagocalculation.R
 import com.example.osagocalculation.data.dto.FormData
 import com.example.osagocalculation.presentation.form.adapter.viewholder.FormViewHolder
-import com.example.osagocalculation.presentation.form.listener.OnClickItemListener
+import com.example.osagocalculation.presentation.form.listener.OnFormClickListener
 
-class FormAdapter(private val listener: OnClickItemListener) :
+class FormAdapter(private val listener: OnFormClickListener) :
     RecyclerView.Adapter<FormViewHolder>() {
 
     val items: MutableList<FormData> = mutableListOf()

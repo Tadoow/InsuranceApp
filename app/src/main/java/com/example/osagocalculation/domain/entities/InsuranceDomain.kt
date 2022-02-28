@@ -1,11 +1,15 @@
 package com.example.osagocalculation.domain.entities
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class InsuranceDomain(
     val name: String,
-    val rating: Double,
-    val price: Int,
+    val rating: String,
+    val price: String,
     val iconUrl: String?,
     val iconTitle: String,
-    val fontColor: String,
-    val iconBackground: String
-)
+    val fontColor: Int,
+    val iconBackground: Int
+) : Parcelable

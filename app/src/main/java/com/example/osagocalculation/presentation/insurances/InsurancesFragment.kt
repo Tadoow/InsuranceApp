@@ -1,49 +1,46 @@
 package com.example.osagocalculation.presentation.insurances
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.osagocalculation.App
 import com.example.osagocalculation.R
-import com.example.osagocalculation.data.RepositoryImpl
-import com.example.osagocalculation.data.store.FactorsStoreImpl
 import com.example.osagocalculation.databinding.FragmentInsurancesBinding
-import com.example.osagocalculation.domain.Interactor
 import com.example.osagocalculation.domain.entities.Factors
+import com.example.osagocalculation.domain.entities.InsuranceDomain
+import com.example.osagocalculation.getFragmentComponent
 import com.example.osagocalculation.presentation.insurances.adapter.InsurancesAdapter
-import com.example.osagocalculation.presentation.insurances.listener.OnInsurancesFragmentListener
+import com.example.osagocalculation.presentation.insurances.listener.OnInsuranceClickListener
+import com.example.osagocalculation.presentation.main.MainFragment
 
-class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
+class InsurancesFragment : Fragment(R.layout.fragment_insurances), OnInsuranceClickListener {
 
     private lateinit var binding: FragmentInsurancesBinding
     private val factors: List<Factors> by lazy {
-        requireArguments().getParcelableArrayList(
-            FACTORS_KEY
-        )!!
+        requireArguments().getParcelableArrayList(FACTORS_KEY)!!
     }
 
-    private val viewModel: InsurancesViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val factorsApi = (activity?.application as App).factorsApi
-                val factorsStore =
-                    FactorsStoreImpl((activity?.application as App).applicationContext)
-                val repository = RepositoryImpl(factorsApi, factorsStore)
-                val interactor = Interactor(repository)
-                return InsurancesViewModel(interactor) as T
+    private val viewModel: InsurancesViewModel by viewModels { getFragmentComponent().getViewModelFactory() }
+
+    private val adapter = InsurancesAdapter(this)
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToMainFragment()
             }
-
         }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
-
-    private val adapter = InsurancesAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,9 +61,15 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
         observeLiveData()
     }
 
-    override fun onStart() {
-        super.onStart()
-        (parentFragment as OnInsurancesFragmentListener).onFragmentStart()
+    override fun onInsuranceClick(insurance: InsuranceDomain) {
+        setFragmentResult(REQUEST_KEY, bundleOf(ITEM_KEY to insurance))
+        navigateToMainFragment()
+    }
+
+    private fun navigateToMainFragment() {
+        val fragment =
+            activity?.supportFragmentManager?.findFragmentByTag(MainFragment.TAG) as MainFragment
+        fragment.backPressed()
     }
 
     private fun observeLiveData() {
@@ -74,8 +77,7 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
             adapter.setData(it)
         }
         viewModel.errorLiveData.observe(viewLifecycleOwner) {
-            binding.shimmerInsurances.isVisible = true
-            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
         }
         viewModel.progressLiveData.observe(viewLifecycleOwner) {
             binding.shimmerInsurances.isVisible = it
@@ -87,6 +89,8 @@ class InsurancesFragment : Fragment(R.layout.fragment_insurances) {
         const val TAG = "InsurancesFragment"
 
         private const val FACTORS_KEY = "FACTORS_KEY"
+        private const val REQUEST_KEY = "REQUEST_KEY"
+        private const val ITEM_KEY = "ITEM_KEY"
 
         fun newInstance(factors: List<Factors>): Fragment {
             val fragment = InsurancesFragment()

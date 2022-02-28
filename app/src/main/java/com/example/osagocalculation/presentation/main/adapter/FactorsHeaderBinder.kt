@@ -2,11 +2,11 @@ package com.example.osagocalculation.presentation.main.adapter
 
 import com.example.osagocalculation.domain.entities.Factors
 import com.example.osagocalculation.presentation.main.adapter.viewholder.FactorsHeaderViewHolder
-import com.example.osagocalculation.presentation.main.listener.OnItemClickListener
+import com.example.osagocalculation.presentation.main.listener.OnFactorClickListener
 
 object FactorsHeaderBinder {
 
-    fun onBind(holder: FactorsHeaderViewHolder, item: Factors, listener: OnItemClickListener) {
+    fun onBind(holder: FactorsHeaderViewHolder, item: Factors, listener: OnFactorClickListener) {
         val header = item as Factors.Header
         holder.setFactorsNames(buildFactorsNames(header))
         holder.setHeaderState(header.expanded)
