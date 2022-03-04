@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/text_application_form_hint"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="12dp"
-    android:hint="Мощность автомобиля"
-    android:textColorHint="@color/main_60"
-    app:hintTextAppearance="@style/TextSecondary"
-    app:placeholderTextAppearance="@style/TextPrimary">
+    android:background="@drawable/tw_form_background"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="11dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="11dp">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <TextView
+        android:id="@+id/text_application_form_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/form_hint"
+        android:textAppearance="@style/TextPrimary" />
+
+    <TextView
         android:id="@+id/text_application_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/items_form_background"
-        android:focusable="false"
+        android:paddingTop="4dp"
         android:textAppearance="@style/TextPrimary"
-        android:textColor="@color/main_100" />
+        android:textColor="@color/main_100"
+        android:visibility="gone" />
 
-</com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

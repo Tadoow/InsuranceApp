@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_insurances"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingBottom="70dp"
+        tools:listitem="@layout/item_insurance" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_insurances"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:shimmer_base_alpha="1"
+        app:shimmer_highlight_alpha="0.3">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="70dp">
+
+            <include layout="@layout/item_insurance_shimmer" />
+
+            <include layout="@layout/item_insurance_shimmer" />
+
+            <include layout="@layout/item_insurance_shimmer" />
+
+            <include layout="@layout/item_insurance_shimmer" />
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</FrameLayout>
